@@ -460,4 +460,4 @@ if __name__ == '__main__':
     # - end: ending ID number (default: 8000)
     # - delay: delay between requests in seconds (default: 0.5)
 
-    scraper.scrape_all(start=5780, end=8000, delay=0.1)
+    scraper.scrape_all(start=0, end=8000, delay=0.1)
