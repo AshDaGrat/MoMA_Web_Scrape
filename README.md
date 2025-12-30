@@ -116,38 +116,11 @@ if __name__ == "__main__":
     scraper.scrape_all(start=1, end=8000, delay=0.5)  # Modify these values
 ```
 
-### Option 2: Test Scraper (Recommended First)
-
-Test the scraper on sample URLs before running a full scrape:
-
-```bash
-python test_scraper.py
-```
-
-**What it does:**
-- Tests 6 sample URLs to verify scraper functionality
-- Checks if HTML structure has changed
-- Saves results to `main.csv`
-- Useful for validating your setup
-
-**Sample test URLs:**
-- Film: 6958, 6871
-- Galleries: 6954, 6966
-- Exhibitions: 6940, 6961
-
-### Option 3: Resume Scraper (Continue Interrupted Scrapes)
-
-Resume or continue an interrupted scraping session:
-
-```bash
-python resume_scrape.py
-```
-
 **Features:**
 - Automatically detects already-scraped URLs in `main.csv`
 - Skips completed pages to avoid duplicates
 - Scrapes only missing IDs from 1 to 8000
-- Uses 0.5 second delay (more conservative)
+- Uses 0.1 second delay (more conservative)
 
 **How it works:**
 1. Loads existing `main.csv`
@@ -205,85 +178,13 @@ Found page! Total new pages: 15
 
 ## Error Handling
 
-The scraper gracefully handles common errors:
+The scraper handles common errors:
 
 - **404 Errors:** Skipped (page doesn't exist)
 - **Network Timeouts:** Request times out after 30 seconds
 - **Cloudflare Blocks:** Handled automatically by cloudscraper
 - **Malformed HTML:** Returns None and continues
 - **Connection Errors:** Logged and skipped
-
-## Best Practices
-
-### Respectful Scraping
-
-1. **Use appropriate delays:**
-   - Development/testing: 0.1-0.5 seconds
-   - Production: 0.5-1.0 seconds
-   - Conservative: 1.0-2.0 seconds
-
-2. **Monitor your scraping:**
-   - Watch for error messages
-   - Check if success rate drops significantly
-   - Adjust delay if you encounter blocks
-
-3. **Run during off-peak hours:**
-   - Reduces load on MoMA's servers
-   - Less likely to be rate-limited
-
-### Data Management
-
-1. **Backup regularly:**
-   ```bash
-   cp main.csv main_backup_$(date +%Y%m%d).csv
-   ```
-
-2. **Use resume script for interruptions:**
-   - Don't restart from scratch
-   - Resume script automatically detects progress
-
-3. **Validate data periodically:**
-   - Check for missing required fields
-   - Verify data quality on sample rows
-
-## Troubleshooting
-
-### Common Issues
-
-**Problem:** "Module not found" error
-```
-Solution: Activate virtual environment and reinstall dependencies
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
-**Problem:** Scraper getting blocked
-```
-Solution: Increase delay parameter
-scraper.scrape_all(start=1, end=8000, delay=1.0)  # Slower but safer
-```
-
-**Problem:** CSV encoding errors
-```
-Solution: File is already UTF-8 encoded. Use Excel's "Import Data" feature instead of double-clicking
-```
-
-**Problem:** Duplicate data in CSV
-```
-Solution: Use resume_scrape.py which automatically deduplicates
-```
-
-## Project Statistics
-
-**Current Progress:**
-- 5,632 pages scraped
-- ~23% of potential URLs covered
-- Data size: 14.6 MB
-
-**Performance:**
-- ~0.1-0.5 seconds per request
-- ~7,200-36,000 requests per hour (with delay)
-- Estimated time for full scrape: 7-35 hours
 
 ## File Structure
 
@@ -297,23 +198,3 @@ web_scrape/
 ├── venv/                # Virtual environment (generated)
 └── README.md            # This file
 ```
-
-## License
-
-This project is for educational and research purposes. Please respect MoMA's terms of service and robots.txt when using this scraper.
-
-## Contributing
-
-To modify the scraper:
-
-1. Test changes with `test_scraper.py` first
-2. Use small ID ranges for testing
-3. Check output data quality in `main.csv`
-4. Update this README if adding new features
-
-## Support
-
-For issues or questions:
-- Check the troubleshooting section above
-- Review code comments in `moma_scraper.py`
-- Verify HTML structure hasn't changed at target URLs
